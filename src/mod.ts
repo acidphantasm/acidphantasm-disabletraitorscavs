@@ -9,17 +9,17 @@ import { VFS } from "@spt-aki/utils/VFS";
 import { jsonc } from "jsonc";
 import path from "node:path";
 
-class ConfigureTraitorScav implements IPreAkiLoadMod
+class DisableTraitorScavs implements IPreAkiLoadMod
 {
     private mod: string
     private logger: ILogger
 
     private static vfs = container.resolve<VFS>("VFS"); 
-    private static config: Config = jsonc.parse(ConfigureTraitorScav.vfs.readFile(path.resolve(__dirname, "../config/config.jsonc")));
+    private static config: Config = jsonc.parse(DisableTraitorScavs.vfs.readFile(path.resolve(__dirname, "../config/config.jsonc")));
 
     constructor() 
     {
-        this.mod = "acidphantasm-configuretraitorscav"; // Set name of mod so we can log it to console later
+        this.mod = "acidphantasm-disabletraitorscavs"; // Set name of mod so we can log it to console later
     }
 
     public preAkiLoad(container: DependencyContainer): void
@@ -27,9 +27,9 @@ class ConfigureTraitorScav implements IPreAkiLoadMod
         this.logger = container.resolve<ILogger>("WinstonLogger");
         const configServer = container.resolve<ConfigServer>("ConfigServer");
         const inRaidConfig: IInRaidConfig = configServer.getConfig<IInRaidConfig>(ConfigTypes.IN_RAID);
-        let localChance = ConfigureTraitorScav.config.traitorScavChance;
+        let localChance = DisableTraitorScavs.config.traitorScavChance;
 
-        if (ConfigureTraitorScav.config.disableTraitorScavs)
+        if (DisableTraitorScavs.config.disableTraitorScavs)
         {
             inRaidConfig.playerScavHostileChancePercent = 0;
             this.logger.log(`[${this.mod}] Traitor Scav Chance: ${inRaidConfig.playerScavHostileChancePercent}% - Disabled`, "cyan");
@@ -62,4 +62,4 @@ interface Config
     disableTraitorScavs: boolean,
 }
 
-module.exports = { mod: new ConfigureTraitorScav() }
+module.exports = { mod: new DisableTraitorScavs() }
