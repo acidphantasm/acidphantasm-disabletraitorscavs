@@ -36,11 +36,17 @@ class ConfigureTraitorScav implements IPreAkiLoadMod
         }
         else
         {
-            if (localChance > 100)
+            if (localChance >= 100)
             {
                 localChance = 100
                 inRaidConfig.playerScavHostileChancePercent = localChance;
                 this.logger.log(`[${this.mod}] Traitor Scav Chance: ${inRaidConfig.playerScavHostileChancePercent}%`, "cyan");
+            }
+            else if (localChance <= 0)
+            {
+                localChance = 0
+                inRaidConfig.playerScavHostileChancePercent = localChance;
+                this.logger.log(`[${this.mod}] Traitor Scav Chance: ${inRaidConfig.playerScavHostileChancePercent}% - Disabled`, "cyan");
             }
             else
             {
