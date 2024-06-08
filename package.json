@@ -1,9 +1,9 @@
 {
-    "name": "EditDatabase",
+    "name": "ConfigureTraitorScav",
     "version": "1.0.0",
     "main": "src/mod.js",
     "license": "MIT",
-    "author": "Chomp",
+    "author": "acidphantasm",
     "akiVersion": "~3.8",
 	"loadBefore": [],
 	"loadAfter": [],
