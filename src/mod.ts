@@ -62,8 +62,13 @@ class DisableTraitorScavs implements IPreAkiLoadMod, IPostDBLoadMod
         this.logger = container.resolve<ILogger>("WinstonLogger");        
         const configServer = container.resolve<ConfigServer>("ConfigServer"); 
         const inRaidConfig: IInRaidConfig = configServer.getConfig<IInRaidConfig>(ConfigTypes.IN_RAID);
+        const localChance = DisableTraitorScavs.config.traitorScavChance;
 
-        if (inRaidConfig.playerScavHostileChancePercent !== DisableTraitorScavs.config.traitorScavChance && !DisableTraitorScavs.config.disableTraitorScavs)
+        if (inRaidConfig.playerScavHostileChancePercent !== localChance && !DisableTraitorScavs.config.disableTraitorScavs)
+        {
+            this.logger.error(`[${this.mod}] is being overwritten by another mod. Adjust your load order to have this mod load last.`)
+        }
+        if (inRaidConfig.playerScavHostileChancePercent !== 0 && DisableTraitorScavs.config.disableTraitorScavs)
         {
             this.logger.error(`[${this.mod}] is being overwritten by another mod. Adjust your load order to have this mod load last.`)
         }
