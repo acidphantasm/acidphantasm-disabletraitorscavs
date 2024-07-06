@@ -1,17 +1,16 @@
 import { DependencyContainer, container } from "tsyringe";
 
-import { IPreAkiLoadMod } from "@spt-aki/models/external/IPreAkiLoadMod";
-import { IPostDBLoadMod } from "@spt-aki/models/external/IPostDBLoadMod";
-import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
-import { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";
-import { ConfigServer } from "@spt-aki/servers/ConfigServer";
-import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
-import { IInRaidConfig } from "@spt-aki/models/spt/config/IInRaidConfig";
-import { VFS } from "@spt-aki/utils/VFS";
+import { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
+import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
+import { ILogger } from "@spt/models/spt/utils/ILogger";
+import { ConfigServer } from "@spt/servers/ConfigServer";
+import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
+import { VFS } from "@spt/utils/VFS";
 import { jsonc } from "jsonc";
 import path from "node:path";
 
-class DisableTraitorScavs implements IPreAkiLoadMod, IPostDBLoadMod
+class DisableTraitorScavs implements IPreSptLoadMod, IPostDBLoadMod
 {
     private mod: string
     private logger: ILogger
@@ -23,7 +22,7 @@ class DisableTraitorScavs implements IPreAkiLoadMod, IPostDBLoadMod
     {
         this.mod = "acidphantasm-disabletraitorscavs"; // Set name of mod so we can log it to console later
     }
-    public preAkiLoad(container: DependencyContainer): void
+    public preSptLoad(container: DependencyContainer): void
     {
         this.logger = container.resolve<ILogger>("WinstonLogger");
         const configServer = container.resolve<ConfigServer>("ConfigServer"); 
