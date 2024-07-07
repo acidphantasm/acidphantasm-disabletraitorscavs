@@ -1,6 +1,5 @@
 import { DependencyContainer, container } from "tsyringe";
 
-import { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
 import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -10,7 +9,7 @@ import { VFS } from "@spt/utils/VFS";
 import { jsonc } from "jsonc";
 import path from "node:path";
 
-class DisableTraitorScavs implements IPreSptLoadMod, IPostDBLoadMod
+class DisableTraitorScavs implements IPostDBLoadMod
 {
     private mod: string
     private logger: ILogger
@@ -22,7 +21,8 @@ class DisableTraitorScavs implements IPreSptLoadMod, IPostDBLoadMod
     {
         this.mod = "acidphantasm-disabletraitorscavs"; // Set name of mod so we can log it to console later
     }
-    public preSptLoad(container: DependencyContainer): void
+
+    postDBLoad(container: DependencyContainer): void 
     {
         this.logger = container.resolve<ILogger>("WinstonLogger");
         const configServer = container.resolve<ConfigServer>("ConfigServer"); 
@@ -53,23 +53,6 @@ class DisableTraitorScavs implements IPreSptLoadMod, IPostDBLoadMod
                 inRaidConfig.playerScavHostileChancePercent = localChance;
                 this.logger.log(`[${this.mod}] Traitor Scav Chance: ${inRaidConfig.playerScavHostileChancePercent}%`, "cyan");
             }
-        }
-    }
-    
-    postDBLoad(container: DependencyContainer): void 
-    {
-        this.logger = container.resolve<ILogger>("WinstonLogger");        
-        const configServer = container.resolve<ConfigServer>("ConfigServer"); 
-        const inRaidConfig: IInRaidConfig = configServer.getConfig<IInRaidConfig>(ConfigTypes.IN_RAID);
-        const localChance = DisableTraitorScavs.config.traitorScavChance;
-
-        if (inRaidConfig.playerScavHostileChancePercent !== localChance && !DisableTraitorScavs.config.disableTraitorScavs)
-        {
-            this.logger.error(`[${this.mod}] is being overwritten by another mod. Adjust your load order to have this mod load last.`)
-        }
-        if (inRaidConfig.playerScavHostileChancePercent !== 0 && DisableTraitorScavs.config.disableTraitorScavs)
-        {
-            this.logger.error(`[${this.mod}] is being overwritten by another mod. Adjust your load order to have this mod load last.`)
         }
     }
 }
