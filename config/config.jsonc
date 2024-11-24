@@ -1,4 +1,4 @@
 {
     "disableTraitorScavs": true,          // Disable traitor scavs, set false to use percent chance
-    "traitorScavChance": 15               // Percent chance to spawn a traitor scav
+    "traitorScavChance": 15               // Percent chance to spawn a traitor scav - does nothing if above is true
 }
